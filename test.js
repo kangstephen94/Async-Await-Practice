@@ -9,37 +9,29 @@ const http = axios.create({
   },
 })
 
+function requestAsync(url) {
+  return new Promise(function (resolve, reject) {
+    http.get(url)
+      .then(response => {
+        resolve(response.data)
+      })
+    })
+  }
+
 async function fetchData () {
   try {
-    // Github API
 
-    const promise = new Promise (resolve => {
-      setTimeout(function () {
-        resolve(http.get(
-          `/repos/kangstephen94/mICO/comments`
-        ))
-      }, 5000)
-    })
-    // const comments = setTimeout(function () {http.get(
-    //   `/repos/kangstephen94/mICO/comments`
-    // )}, 5000)
+    // const commitComments = http.get(
+    //   `/repos/npm/cli/pulls/comments`,
+    // )
 
-    const comments = promise
+    var pulls = requestAsync(`/repos/npm/cli/pulls/comments`);
+    var commits = requestAsync('/repos/npm/cli/comments')
+    var issues = requestAsync('repos/npm/cli/issues/comments')
 
-    // const pulls = setTimeout(function () {http.get(
-    //   '/repos/kangstephen94/mICO/pulls/comments'
-    // )}, 6000)
-    
-    console.log(await comments)
-    // console.log(await pulls)
-
-    //Testing Sequential Requests
-
-
-    
-
-
-
+    let results = []
+    results = results.concat(await pulls, await commits, await issues)
+    console.log(results)
 
   }
   catch (err) {
