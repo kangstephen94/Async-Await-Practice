@@ -12,20 +12,35 @@ const http = axios.create({
 async function fetchData () {
   try {
     // Github API
-    // const comments = http.get(
-    //   `/repos/kangstephen94/mICO/comments`
-    // )
-    // const pulls = http.get(
-    //   '/repos/kangstephen94/mICO/pulls/comments'
-    // )
 
-    // console.log(await comments)
+    const promise = new Promise (resolve => {
+      setTimeout(function () {
+        resolve(http.get(
+          `/repos/kangstephen94/mICO/comments`
+        ))
+      }, 5000)
+    })
+    // const comments = setTimeout(function () {http.get(
+    //   `/repos/kangstephen94/mICO/comments`
+    // )}, 5000)
+
+    const comments = promise
+
+    // const pulls = setTimeout(function () {http.get(
+    //   '/repos/kangstephen94/mICO/pulls/comments'
+    // )}, 6000)
+    
+    console.log(await comments)
     // console.log(await pulls)
 
     //Testing Sequential Requests
 
-    const slow = 
+
     
+
+
+
+
   }
   catch (err) {
     console.error(chalk.red(err))
