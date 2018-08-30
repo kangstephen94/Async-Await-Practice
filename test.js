@@ -1,10 +1,11 @@
 const axios = require("axios");
 const chalk = require("chalk");
+const config = require('./config')
 
 const http = axios.create({
   baseURL: 'https://api.github.com',
   headers: {
-    Authorization: `token c4dbf02332415d52f8ce8e40f400e40fdca004e6`,
+    Authorization: `token ${config.GITHUB_PERSONAL_ACCESS_TOKEN}`,
   },
 })
 
