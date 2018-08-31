@@ -3,44 +3,25 @@ const chalk = require("chalk");
 const config = require('./config')
 
 const http = axios.create({
-  baseURL: 'https://api.github.com',
+  baseURL: "https://pro-api.coinmarketcap.com",
   headers: {
-    Authorization: `token ${config.GITHUB_PERSONAL_ACCESS_TOKEN}`,
-  },
+    'X-CMC_PRO_API_KEY': config.COINMARKETCAP_API_KEY,
+    json: true
+  }
 })
-
-function requestAsync(url) {
-  return new Promise(function (resolve, reject) {
-    http.get(url)
-      .then(response => {
-        resolve(response.data)
-      })
-    })
-  }
-
-  function doSomething() {
-    return http.get('/repos/npm/cli/pulls/comments')
-  }
-  
-  function manipulateData (response) {
-    let result = []
-    response.data.forEach (data => {
-      result = result.concat(data)
-    })
-  }
 
 async function fetchData () {
   try {
+    const CryptoAPI = http.get(`v1/cryptocurrency/listings/latest`);
+    const response = await CryptoAPI
 
-    const a = doSomething()
-    const result = manipulateData(await a)
-
-
-    console.log(result)
-
+    response.data.data.forEach(crypto => {
+      console.log(crypto)
+    })
   }
   catch (err) {
     console.error(chalk.red(err))
+    console.dir(err.response, { colors: true, depth: 4 });
   }
 }
 
