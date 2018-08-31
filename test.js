@@ -18,25 +18,29 @@ function requestAsync(url) {
     })
   }
 
+  function doSomething() {
+    return http.get('/repos/npm/cli/pulls/comments')
+  }
+  
+  function manipulateData (response) {
+    let result = []
+    response.data.forEach (data => {
+      result = result.concat(data)
+    })
+  }
+
 async function fetchData () {
   try {
 
-    // const commitComments = http.get(
-    //   `/repos/npm/cli/pulls/comments`,
-    // )
+    const a = doSomething()
+    const result = manipulateData(await a)
 
-    var pulls = requestAsync(`/repos/npm/cli/pulls/comments`);
-    var commits = requestAsync('/repos/npm/cli/comments')
-    var issues = requestAsync('repos/npm/cli/issues/comments')
 
-    let results = []
-    results = results.concat(await pulls, await commits, await issues)
-    console.log(results)
+    console.log(result)
 
   }
   catch (err) {
     console.error(chalk.red(err))
-    console.dir(err.response, { colors: true, depth: 4 })
   }
 }
 
