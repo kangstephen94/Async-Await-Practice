@@ -11,7 +11,6 @@ const http = axios.create({
 })
 
 
-/
 async function greatestChange () {
   try {
     const CryptoAPI = http.get(`v1/cryptocurrency/listings/latest`);
@@ -24,6 +23,19 @@ async function greatestChange () {
       const percentChange = crypto.quote.USD.percent_change_1h
       result[cryptoName] = percentChange
     })
+
+    for (let key in result) {
+      if (result.hasOwnProperty(key)) {
+        if (result[key] >= 3 || result[key] <= -3) {
+          console.log(chalk.red(`${key}: ${result[key]}`))
+        } else if (result[key] >= 0.5 || result[key] <= -0.5) {
+          console.log(chalk.yellow(`${key}: ${result[key]}`))
+        } else {
+          console.log(chalk.green(`${key}: ${result[key]}`))
+        }
+      }
+    }
+
   }
   catch (err) {
     console.error(chalk.red(err))
@@ -31,4 +43,4 @@ async function greatestChange () {
   }
 }
 
-fetchData()
+greatestChange()
