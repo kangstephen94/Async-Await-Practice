@@ -10,19 +10,25 @@ const http = axios.create({
   }
 })
 
+async function storeChange () {
+  const change = {};
+  const response = await http.get(`v1/cryptocurrency/listings/latest`);
+
+  response.data.data.forEach(crypto => {
+    const cryptoName = crypto.name
+    const percentChange = crypto.quote.USD.percent_change_24h
+    change[cryptoName] = percentChange
+  })
+
+  return change
+}
+
+console.log('RED = VOLATILE, YELLOW = MODERATELY VOLATILE, GREEN = STABLE')
 
 async function greatestChange () {
   try {
-    const CryptoAPI = http.get(`v1/cryptocurrency/listings/latest`);
-    const response = await CryptoAPI
 
-    let result = {};
-
-    response.data.data.forEach(crypto => {
-      const cryptoName = crypto.name
-      const percentChange = crypto.quote.USD.percent_change_1h
-      result[cryptoName] = percentChange
-    })
+    const result = await storeChange()
 
     for (let key in result) {
       if (result.hasOwnProperty(key)) {
