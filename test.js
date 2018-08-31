@@ -10,13 +10,19 @@ const http = axios.create({
   }
 })
 
-async function fetchData () {
+
+/
+async function greatestChange () {
   try {
     const CryptoAPI = http.get(`v1/cryptocurrency/listings/latest`);
     const response = await CryptoAPI
 
+    let result = {};
+
     response.data.data.forEach(crypto => {
-      console.log(crypto)
+      const cryptoName = crypto.name
+      const percentChange = crypto.quote.USD.percent_change_1h
+      result[cryptoName] = percentChange
     })
   }
   catch (err) {
